@@ -18,12 +18,13 @@
 #
 include_recipe "openldap::client"
 
+package node['openldap']['db4_package'] do
+  action :upgrade
+end
+
 case node['platform']
 when "ubuntu"
-  package default['openldap']['db4_package'] do
-    action :upgrade
-  end
-
+  
   directory node['openldap']['preseed_dir'] do
     action :create
     recursive true
@@ -44,10 +45,6 @@ when "ubuntu"
     action :upgrade
   end
 else
-  package default['openldap']['db4_package'] do
-    action :upgrade
-  end
-
   package "slapd" do
     action :upgrade
   end
