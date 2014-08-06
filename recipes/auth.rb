@@ -21,11 +21,11 @@ include_recipe "openldap::client"
 include_recipe "openssh"
 include_recipe "nscd"
 
-package "libnss-ldap" do
+package node['openldap']['nss_ldap_package'] do
   action :upgrade
 end
 
-package "libpam-ldap" do
+package node['openldap']['pam_ldap_package'] do
   action :upgrade
 end
 

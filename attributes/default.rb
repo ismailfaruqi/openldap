@@ -35,6 +35,8 @@ default['openldap']['rootpw'] = nil
 default['openldap']['client_package'] = 'ldap-utils'
 default['openldap']['server_package'] = 'slapd'
 default['openldap']['db4_package'] = "db4.8-util"
+default['openldap']['nss_ldap_package'] = "libnss-ldap"
+default['openldap']['pam_ldap_package'] = "libpam-ldap"
 
 # File and directory locations for openldap.
 case node['platform']
@@ -42,6 +44,8 @@ when "redhat","centos","amazon","scientific"
   default['openldap']['server_package'] = 'openldap-servers'
   default['openldap']['db4_package'] = "db4-utils"
   default['openldap']['client_package'] = "openldap-clients"
+  default['openldap']['nss_ldap_package'] = "nss_ldap"
+  default['openldap']['pam_ldap_package'] = "nss-pam-ldapd"
   default['openldap']['dir']        = "/etc/openldap"
   default['openldap']['run_dir']    = "/var/run/openldap"
   default['openldap']['module_dir'] = "/usr/lib64/openldap"
