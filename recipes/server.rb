@@ -109,8 +109,10 @@ else
   template "#{node['openldap']['dir']}/slapd.conf" do
     source "slapd.conf.erb"
     mode 00640
-    owner "openldap"
-    group "openldap"
+    # owner "openldap"
+    # group "openldap" # why use openldap user in redhat when it is never created?
+    owner "root"
+    group "root"
     notifies :restart, "service[slapd]"
   end
 end
