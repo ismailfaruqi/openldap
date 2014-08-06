@@ -40,12 +40,12 @@ when "ubuntu"
     group "root"
   end
 
-  package "slapd" do
+  package node['openldap']['server_package'] do
     response_file "slapd.seed"
     action :upgrade
   end
 else
-  package "slapd" do
+  package node['openldap']['server_package'] do
     action :upgrade
   end
 end
