@@ -32,10 +32,12 @@ unless node['domain'].nil? || node['domain'].split('.').count < 2
 end
 
 default['openldap']['rootpw'] = nil
+default['openldap']['client_package'] = 'ldap-utils'
 
 # File and directory locations for openldap.
 case node['platform']
 when "redhat","centos","amazon","scientific"
+  default['openldap']['client_package'] = "openldap-clients"
   default['openldap']['dir']        = "/etc/openldap"
   default['openldap']['run_dir']    = "/var/run/openldap"
   default['openldap']['module_dir'] = "/usr/lib64/openldap"
