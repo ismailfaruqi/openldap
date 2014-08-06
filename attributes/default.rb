@@ -33,10 +33,12 @@ end
 
 default['openldap']['rootpw'] = nil
 default['openldap']['client_package'] = 'ldap-utils'
+default['openldap']['db4_package'] = "db4.8-util"
 
 # File and directory locations for openldap.
 case node['platform']
 when "redhat","centos","amazon","scientific"
+  default['openldap']['db4_package'] = "db4-utils"
   default['openldap']['client_package'] = "openldap-clients"
   default['openldap']['dir']        = "/etc/openldap"
   default['openldap']['run_dir']    = "/var/run/openldap"
