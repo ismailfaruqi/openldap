@@ -1,0 +1,47 @@
+dn: olcDatabase={2}bdb
+objectClass: olcDatabaseConfig
+objectClass: olcBdbConfig
+olcDatabase: {2}bdb
+olcSuffix: <%= node['openldap']['basedn'] %>
+olcAddContentAcl: FALSE
+olcLastMod: TRUE
+olcMaxDerefDepth: 15
+olcReadOnly: FALSE
+olcRootDN: cn=admin,<%= node['openldap']['basedn'] %>
+olcRootPW: <%= node['openldap']['rootpw'] %>
+olcSyncUseSubentry: FALSE
+olcMonitoring: TRUE
+olcDbDirectory: /var/lib/ldap
+olcDbCacheSize: 1000
+olcDbCheckpoint: 1024 15
+olcDbNoSync: FALSE
+olcDbDirtyRead: FALSE
+olcDbIDLcacheSize: 0
+olcDbIndex: objectClass pres,eq
+olcDbIndex: cn pres,eq,sub
+olcDbIndex: uid pres,eq,sub
+olcDbIndex: uidNumber pres,eq
+olcDbIndex: gidNumber pres,eq
+olcDbIndex: mail pres,eq,sub
+olcDbIndex: ou pres,eq,sub
+olcDbIndex: loginShell pres,eq
+olcDbIndex: sn pres,eq,sub
+olcDbIndex: givenName pres,eq,sub
+olcDbIndex: memberUid pres,eq,sub
+olcDbIndex: nisMapName pres,eq,sub
+olcDbIndex: nisMapEntry pres,eq,sub
+olcDbLinearIndex: FALSE
+olcDbMode: 0600
+olcDbSearchStack: 16
+olcDbShmKey: 0
+olcDbCacheFree: 1
+olcDbDNcacheSize: 0
+olcAccess: {0}to attrs=userPassword by self write by dn.base="cn=admin,<%= node['openldap']['basedn'] %>" write by anonymous auth by * none
+olcAccess: {1}to * by dn.base="cn=admin,<%= node['openldap']['basedn'] %>" write by self write by * read
+structuralObjectClass: olcBdbConfig
+entryUUID: 813c1318-b2f9-1033-932e-237b85d54c9f
+creatorsName: cn=config
+createTimestamp: 20140808034037Z
+entryCSN: 20140808034037.201388Z#000000#000#000000
+modifiersName: cn=config
+modifyTimestamp: 20140808034037Z

@@ -16,39 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "openldap::client"
-
-package node['openldap']['db4_package'] do
-  action :upgrade
-end
-
-case node['platform']
-when "ubuntu"
-  
-  directory node['openldap']['preseed_dir'] do
-    action :create
-    recursive true
-    mode 00700
-    owner "root"
-    group "root"
-  end
-
-  cookbook_file "#{node['openldap']['preseed_dir']}/slapd.seed" do
-    source "slapd.seed"
-    mode 00600
-    owner "root"
-    group "root"
-  end
-
-  package node['openldap']['server_package'] do
-    response_file "slapd.seed"
-    action :upgrade
-  end
-else
-  package node['openldap']['server_package'] do
-    action :upgrade
-  end
-end
 
 if node['openldap']['tls_enabled'] && node['openldap']['manage_ssl']
   cookbook_file node['openldap']['ssl_cert'] do
@@ -65,57 +34,7 @@ if node['openldap']['tls_enabled'] && node['openldap']['manage_ssl']
   end
 end
 
-if (node['platform'] == "ubuntu")
-  template "/etc/default/slapd" do
-    source "default_slapd.erb"
-    owner "root"
-    group "root"
-    mode 00644
-  end
-
-  directory "#{node['openldap']['dir']}/slapd.d" do
-    recursive true
-    owner "openldap"
-    group "openldap"
-    action :create
-  end
-
-  execute "slapd-config-convert" do
-    command "slaptest -f #{node['openldap']['dir']}/slapd.conf -F #{node['openldap']['dir']}/slapd.d/"
-    user "openldap"
-    action :nothing
-    notifies :start, "service[slapd]", :immediately
-  end
-
-  template "#{node['openldap']['dir']}/slapd.conf" do
-    source "slapd.conf.erb"
-    mode 00640
-    owner "openldap"
-    group "openldap"
-    notifies :stop, "service[slapd]", :immediately
-    notifies :run, "execute[slapd-config-convert]"
-  end
-else
-  case node['platform']
-  when "debian","ubuntu"
-    template "/etc/default/slapd" do
-      source "default_slapd.erb"
-      owner "root"
-      group "root"
-      mode 00644
-    end
-  end
-
-  template "#{node['openldap']['dir']}/slapd.conf" do
-    source "slapd.conf.erb"
-    mode 00640
-    # owner "openldap"
-    # group "openldap" # why use openldap user in redhat when it is never created?
-    owner "root"
-    group "root"
-    notifies :restart, "service[slapd]"
-  end
-end
+include_recipe "openldap::server_#{node['platform_family']}"
 
 service "slapd" do
   action [:enable, :start]
