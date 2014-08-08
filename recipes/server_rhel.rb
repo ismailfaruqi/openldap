@@ -14,7 +14,7 @@ template "#{node['openldap']['dir']}/slapd.conf" do
   notifies :restart, "service[slapd]"
 end
 
-template "#{node['openldap']['dir']}/cn=config/olcDatabase={1}monitor.ldif" do
+template "#{node['openldap']['dir']}/slapd.d/cn=config/olcDatabase={1}monitor.ldif" do
   source "olcDatabase={1}monitor.ldif.erb"
   mode 00640
   owner "ldap"
@@ -22,7 +22,7 @@ template "#{node['openldap']['dir']}/cn=config/olcDatabase={1}monitor.ldif" do
   notifies :restart, "service[slapd]"
 end
 
-template "#{node['openldap']['dir']}/cn=config/olcDatabase={2}bdb.ldif" do
+template "#{node['openldap']['dir']}/slapd.d/cn=config/olcDatabase={2}bdb.ldif" do
   source "olcDatabase={2}bdb.ldif.erb"
   mode 00640
   owner "ldap"
