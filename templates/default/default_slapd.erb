@@ -23,7 +23,23 @@ SLAPD_PIDFILE=
 # sockets.
 # Example usage:
 # SLAPD_SERVICES="ldap://127.0.0.1:389/ ldaps:/// ldapi:///"
-SLAPD_SERVICES="ldap:/// ldapi:///"
+# SLAPD_SERVICES="ldap:/// ldapi:///"
+
+# Run slapd with -h "... ldap:/// ..."
+#   yes/no, default: yes
+SLAPD_LDAP=yes
+
+# Run slapd with -h "... ldapi:/// ..."
+#   yes/no, default: yes
+SLAPD_LDAPI=yes
+
+# Run slapd with -h "... ldaps:/// ..."
+#   yes/no, default: no
+<%- if node['openldap']['tls_enabled'] %>
+SLAPD_LDAPS=yes
+<%- else %>
+SLAPD_LDAPS=no
+<%- end %>
 
 # If SLAPD_NO_START is set, the init script will not start or restart
 # slapd (but stop will still work).  Uncomment this if you are
